@@ -1,11 +1,15 @@
 {
     "name": "@flibbert/meerkat",
     "private": false,
-    "version": "0.0.2",
+    "version": "0.0.3",
     "author": {
         "name": "Kakhaber Bazerashvili",
         "email": "kaxabernet@gmail.com",
         "url": "https://github.com/karaxuna"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/karaxuna/meerkat.git"
     },
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
