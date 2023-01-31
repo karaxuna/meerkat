@@ -3,7 +3,7 @@
 Library to simplify working with mongodb aggregation framework. Example:
 
 ```javascript
-import { paginate, match, sort } from 'meerkat';
+import { paginate, match, sort } from '@flibbert/meerkat';
 
 db.getCollection('subscriptions').aggregate([
   ...match({
