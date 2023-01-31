@@ -1,6 +1,20 @@
-## Meerkat
+# Meerkat &middot; [![npm version](https://img.shields.io/npm/v/@flibbert/meerkat.svg?style=flat)](https://www.npmjs.com/package/@flibbert/meerkat)
 
-Library to simplify working with mongodb aggregation framework. Example:
+Library to simplify working with mongodb aggregation framework.
+
+### Installation
+
+npm:
+```
+npm i @flibert/meerkat
+```
+
+yarn:
+```
+yarn add @flibert/meerkat
+```
+
+### Usage:
 
 ```javascript
 import { paginate, match, sort } from '@flibbert/meerkat';
