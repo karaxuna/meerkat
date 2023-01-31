@@ -109,24 +109,32 @@ export const facet = (options: any) => {
   }];
 };
 
-export const paginate = ({ skip, limit }: { skip: number; limit: number; }) => {
+export const skip = (quantity: number) => {
+  return [{
+    $skip: quantity,
+  }];
+};
+
+export const limit = (quantity: number) => {
+  return [{
+    $limit: quantity,
+  }];
+};
+
+export const paginate = (options: { skip: number; limit: number; pipeline?: any[]; }) => {
   return [
     ...facet({
       metadata: [{
         $count: 'total'
       }],
       records: [
-        {
-          $skip: skip,
-        },
-        {
-          $limit: limit,
-        },
+        ...skip(options.skip),
+        ...limit(options.limit),
+        ...(options.pipeline || []),
       ],
     }),
-    ...unwind('metadata'),
     ...addFields({
-      total: '$metadata.total',
+      total: '$metadata.0.total',
     }),
     ...unset('metadata'),
   ];
