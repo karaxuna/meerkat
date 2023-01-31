@@ -234,8 +234,14 @@ test('paginate', () => {
       },
     },
     {
+      $unwind: {
+        path: '$metadata',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
       $addFields: {
-        total: '$metadata.0.total',
+        total: '$metadata.total',
       },
     },
     {

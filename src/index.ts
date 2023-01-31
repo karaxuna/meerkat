@@ -133,8 +133,9 @@ export const paginate = (options: { skip: number; limit: number; pipeline?: any[
         ...(options.pipeline || []),
       ],
     }),
+    ...unwind('metadata'),
     ...addFields({
-      total: '$metadata.0.total',
+      total: '$metadata.total',
     }),
     ...unset('metadata'),
   ];
