@@ -19,13 +19,23 @@ export const unwind = (path: string, options = { preserveNullAndEmptyArrays: tru
   }];
 };
 
-export interface LookupOptions {
+interface LookupBaseOptions {
   from: string;
-  localField: string;
-  foreignField: string;
   as: string;
   unique?: boolean;
 };
+
+export interface LookupWithPipelineOptions extends LookupBaseOptions {
+  let: any;
+  pipeline: any[];
+};
+
+export interface LookupWithFieldsOptions extends LookupBaseOptions {
+  localField: string;
+  foreignField: string;
+};
+
+export type LookupOptions = LookupWithPipelineOptions | LookupWithFieldsOptions;
 
 export const lookup = ({
   unique,
@@ -95,7 +105,7 @@ export const wind = (path: string) => {
   ];
 };
 
-export const lookupArray = (options: LookupOptions) => {
+export const lookupArray = (options: LookupWithFieldsOptions) => {
   return [
     ...unwind(options.localField),
     ...lookup(options),
