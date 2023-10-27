@@ -194,7 +194,7 @@ export const versioning = ({
       [version]: -1,
     }),
     ...group({
-      _id: id,
+      _id: `$${id}`,
       latest: {
         $first: '$$ROOT',
       },
