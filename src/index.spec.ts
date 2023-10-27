@@ -161,7 +161,7 @@ test('lookupArray', () => {
         doc: {
           $first: '$$ROOT',
         },
-        somethings: {
+        targets: {
           $push: '$somethings',
         },
       },
@@ -172,7 +172,7 @@ test('lookupArray', () => {
           $mergeObjects: [
             '$doc',
             {
-              somethings: '$somethings',
+              somethings: '$targets',
             },
           ],
         },

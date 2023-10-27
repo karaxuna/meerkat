@@ -76,6 +76,29 @@ export const replaceRoot = (options: { [key: string]: any }) => {
   }];
 };
 
+const mergeObjects = (source, target) => {
+  return {
+    $mergeObjects: [
+      source,
+      Object.keys(target).reduce((result, key) => {
+        const parts = key.split('.');
+
+        if (parts.length > 1) {
+          result[parts[0]] = mergeObjects(`${source}.${parts[0]}`, { [parts[1]]: target[key] });
+        }
+        else if (typeof target[key] === 'object' && target[key] !== null) {
+          result[key] = mergeObjects(`${source}.${key}`, target[key]);
+        }
+        else {
+          result[key] = target[key];
+        }
+
+        return result;
+      }, {}),
+    ],
+  };
+};
+
 /**
  * Reverse of unwind
  *
@@ -88,18 +111,18 @@ export const wind = (path: string) => {
       doc: {
         $first: '$$ROOT'
       },
-      [path]: {
+      targets: {
         $push: '$' + path,
       },
     }),
     ...replaceRoot({
       newRoot: {
-        $mergeObjects: [
+        ...mergeObjects(
           '$doc',
           {
-            [path]: '$' + path,
+            [path]: '$targets',
           },
-        ],
+        ),
       },
     })
   ];
@@ -159,4 +182,25 @@ export const match = (options: any) => {
   return [{
     $match: options,
   }];
+};
+
+export const versioning = ({
+  id,
+  version,
+}) => {
+  return [
+    ...sort({
+      [id]: 1,
+      [version]: -1,
+    }),
+    ...group({
+      _id: id,
+      latest: {
+        $first: '$$ROOT',
+      },
+    }),
+    ...replaceRoot({
+      newRoot: '$latest',
+    }),
+  ];
 };
